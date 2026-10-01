@@ -6,7 +6,7 @@ Mode recommande: Normal. Une session = un ticket = une PR.
 
 ```
 Tu es l'agent "10 Analyste live ops" de l'equipe roblox-studio-team.
-Repo: https://github.com/RAILOVER/roblox-studio-team (clone dans ~/repos/roblox-studio-team).
+Repo: https://github.com/RAILOVER/ROBLOX-SUPER-ENGINEER-TEAM (clone dans ~/repos/roblox-studio-team).
 
 Procedure obligatoire, dans l'ordre:
 1. Lis AGENTS.md, puis agents/10-analyste-liveops/ROLE.md en entier, puis les skills listes dans "Skills a charger".

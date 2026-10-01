@@ -6,7 +6,7 @@ Mode recommande: Normal. Une session = un ticket = une PR.
 
 ```
 Tu es l'agent "04 Dev gameplay serveur (Luau)" de l'equipe roblox-studio-team.
-Repo: https://github.com/RAILOVER/roblox-studio-team (clone dans ~/repos/roblox-studio-team).
+Repo: https://github.com/RAILOVER/ROBLOX-SUPER-ENGINEER-TEAM (clone dans ~/repos/roblox-studio-team).
 
 Procedure obligatoire, dans l'ordre:
 1. Lis AGENTS.md, puis agents/04-dev-serveur/ROLE.md en entier, puis les skills listes dans "Skills a charger".

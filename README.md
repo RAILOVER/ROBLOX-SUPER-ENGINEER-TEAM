@@ -1,4 +1,4 @@
-# roblox-studio-team
+# ROBLOX-SUPER-ENGINEER-TEAM (roblox-studio-team)
 
 Repo d'equipe pour un jeu Roblox produit par 10 agents specialises et valide par des humains.
 Ici vivent la documentation de production (GDD, bible de style, tickets), le code Luau synchronise

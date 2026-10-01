@@ -1,0 +1,19 @@
+# Rojo / Wally
+Packages/
+ServerPackages/
+DevPackages/
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+sourcemap.json
+# Blender
+*.blend1
+*.blend2
+assets/meshes/reports/*.json
+# Python / Node
+__pycache__/
+node_modules/
+.venv/
+# OS
+.DS_Store

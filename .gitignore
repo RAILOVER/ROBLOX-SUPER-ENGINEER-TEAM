@@ -17,3 +17,6 @@ node_modules/
 .venv/
 # OS
 .DS_Store
+globalTypes.d.luau
+*.fbx
+!assets/meshes/export/.gitkeep

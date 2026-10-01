@@ -54,10 +54,19 @@ def front_matter(text: str) -> dict | None:
     if end == -1:
         return None
     data: dict = {}
+    last_key = ""
     for line in text[4:end].splitlines():
-        if ":" in line and not line.startswith(" "):
+        stripped = line.strip()
+        if stripped.startswith("- ") and last_key:
+            items = data.get(last_key)
+            if not isinstance(items, list):
+                items = []
+            items.append(stripped[2:].strip().strip('"').strip("'"))
+            data[last_key] = items
+        elif ":" in line and not line.startswith(" "):
             key, _, value = line.partition(":")
-            data[key.strip()] = value.strip().strip('"').strip("'")
+            last_key = key.strip()
+            data[last_key] = value.split("#")[0].strip().strip('"').strip("'")
     return data
 
 

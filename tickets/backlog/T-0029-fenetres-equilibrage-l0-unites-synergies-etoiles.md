@@ -1,5 +1,5 @@
 ---
-id: T-0026
+id: T-0029
 title: Fenetres d'equilibrage L0 : 3 unites au-dessus de 60 %, synergie Cielo a 65 %, ecart 3 etoiles contre 1 etoile, Soigneurs sous 43 %
 role: 02-game-designer
 phase: P1-greybox
@@ -42,7 +42,7 @@ T-0023, ce ticket ne les couvre pas.
 
 ## Hors perimetre
 
-Tactiques (T-0024), rythme et nuls (T-0025), competences M1 (T-0023).
+Tactiques (T-0024), rythme et nuls (T-0028), competences M1 (T-0023).
 
 ## Verification
 

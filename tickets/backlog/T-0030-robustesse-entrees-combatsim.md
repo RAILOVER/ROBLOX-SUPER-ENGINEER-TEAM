@@ -1,5 +1,5 @@
 ---
-id: T-0027
+id: T-0030
 title: Robustesse des entrees de CombatSim (orderFocus, tactique inconnue, seeds, equipes vides)
 role: 04-dev-serveur
 phase: P1-greybox

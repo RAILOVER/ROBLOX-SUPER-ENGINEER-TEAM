@@ -29,9 +29,9 @@ Voir acceptance.
   paires jouees dans les 2 sens, blocs miroir et tactiques, CSV + resume Markdown. Echantillon
   `tests/sim/out/duels-sample-1000-m1.csv` ; le reste de `tests/sim/out/` est ignore par git.
 - `docs/reports/balance-M1-2026-10-02.md` : 2 passes de 14 000 combats (M1 et L0), 0 erreur.
-- `docs/reviews/T-0010.md` : verdict VALIDE, 3 FIX non bloquants regroupes dans T-0027.
+- `docs/reviews/T-0010.md` : verdict VALIDE, 3 FIX non bloquants regroupes dans T-0030.
 - `tests/unit/CombatEdgeCases.spec.luau` : 12 tests de cas limites.
-- Tickets ouverts : T-0025 (rythme : duree, nuls, Mega), T-0026 (fenetres L0), T-0027 (robustesse des entrees,
+- Tickets ouverts : T-0028 (rythme : duree, nuls, Mega), T-0029 (fenetres L0), T-0030 (robustesse des entrees,
   04-dev-serveur). Tactiques et competences M1 : chiffres ajoutes a T-0024 et T-0023 via la PR, pas de doublon.
 
 ## Hors perimetre

@@ -1,5 +1,5 @@
 ---
-id: T-0025
+id: T-0028
 title: Rythme des combats M1 : duree animee 42 s, 8,9 % de nuls, Mega Combos dans 22 % des combats
 role: 02-game-designer
 phase: P1-greybox
@@ -46,7 +46,7 @@ Mesures du harnais T-0015 (`docs/reports/balance-M1-2026-10-02.md`, code T-0010,
 
 ## Hors perimetre
 
-Equilibre des tactiques (T-0024), valeurs des competences (T-0023), fenetres par unite et synergie (T-0026).
+Equilibre des tactiques (T-0024), valeurs des competences (T-0023), fenetres par unite et synergie (T-0029).
 
 ## Verification
 

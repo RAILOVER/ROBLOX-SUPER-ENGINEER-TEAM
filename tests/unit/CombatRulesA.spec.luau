@@ -435,7 +435,9 @@ describe("R-M1-16 a R-M1-24 : les 5 actions", function()
 			open(state, banano)
 			SkillEffects.run(state, banano)
 			expect(Status.get(banano, "Provocation").turns).toBe(1)
-			expect(Status.get(banano, "Bouclier").shield).toBe(math.floor(0.2 * banano.hpMax))
+			local shieldPct = Config.Skills.bySlug.banano.params.shieldPct
+			expect(shieldPct).toBe(0.25)
+			expect(Status.get(banano, "Bouclier").shield).toBe(math.floor(shieldPct * banano.hpMax))
 			glorbo.hp = glorbo.hpMax - 500
 			open(state, glorbo)
 			SkillEffects.run(state, glorbo)

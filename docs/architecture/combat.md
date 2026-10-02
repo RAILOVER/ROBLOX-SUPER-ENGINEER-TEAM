@@ -100,8 +100,9 @@ Implementes (synergies, paliers accessibles en M1 ou faciles) : `RegenPerTurn`, 
 `HealPct`, `EnergyGainPct`, `FlatMAG`, `FlatVIT`, `FlatDEFRES`, `PctATQMAG`, `Lifesteal`, `StartShield`, `CritBonus`,
 `AoePct` (mod sur les frappes multi-cibles). Combo : `CoupleStrike` (C05).
 
-Implementes (competences `Config.Skills`) : `PowerStrike`, `MultiHit`, `StrikeBackline`, `WakeAlliesSleepEnemy`,
-`TauntShield`, `DamageStunChance`, `Heal`, `HealEnergy`, `DamageTauntLifesteal`, `MultiTargetTaunt`.
+Implementes (competences `Config.Skills`) : `PowerStrike` (`params.lifestealPct` optionnel depuis T-0023, Croque-pomme),
+`MultiHit`, `StrikeBackline`, `WakeAlliesSleepEnemy`, `TauntShield`, `DamageStunChance`, `Heal`, `HealEnergy`,
+`DamageTauntLifesteal`, `MultiTargetTaunt`. Valeurs : `Config.Skills`, relues par T-0023 (spec duel section 4).
 
 Non implementes : tout autre `effectId` de `Config.Synergies` (paliers 2 et plus : `ColossePctHPTeam`, `CouplePctHP`,
 `HealPctOverheal`, `FlatVITReplay`, `CritBonusFirstHit`, `AoePctSplash`, `RegenPerTurnBurnImmune`, `LifestealATQ`,

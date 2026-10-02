@@ -3,7 +3,7 @@ id: T-0023
 title: Relecture des valeurs de Config.Skills (10 competences M1 et competence par defaut)
 role: 02-game-designer
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: spec
 priority: P1
 depends_on: [T-0010]

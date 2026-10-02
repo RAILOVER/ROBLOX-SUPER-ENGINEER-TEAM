@@ -1,0 +1,25 @@
+{
+  "file": "/home/ubuntu/repos/ROBLOX-SUPER-ENGINEER-TEAM/assets/meshes/source/tralalero-tralala.blend",
+  "blender": "5.2.1 LTS",
+  "budgets": "art/budgets/budgets.yaml",
+  "meshes": 1,
+  "rejected": 0,
+  "exported": [],
+  "results": [
+    {
+      "name": "CHAR_TralaleroTralala",
+      "category": "CHAR",
+      "triangles": 340,
+      "ngons": 0,
+      "dimensions_m": [
+        2.261,
+        6.443,
+        5.0
+      ],
+      "materials": 1,
+      "errors": [],
+      "warnings": [],
+      "status": "PASS"
+    }
+  ]
+}

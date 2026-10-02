@@ -3,7 +3,7 @@ id: T-0011
 title: DuelService serveur (boucle TFT, remotes gardes, bot adversaire)
 role: 04-dev-serveur
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: feature
 priority: P0
 depends_on: [T-0010]

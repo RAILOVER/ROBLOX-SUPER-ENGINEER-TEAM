@@ -3,7 +3,7 @@ id: T-0016
 title: Pipeline bpy de bout en bout sur 1 unite placeholder (export FBX + rapport)
 role: 06-tech-artist-3d
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: feature
 priority: P1
 depends_on: [T-0014]

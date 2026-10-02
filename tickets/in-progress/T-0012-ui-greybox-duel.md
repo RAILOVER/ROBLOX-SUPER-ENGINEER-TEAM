@@ -3,7 +3,7 @@ id: T-0012
 title: UI greybox du duel (mobile paysage) et lecture de l'ActionLog
 role: 05-dev-client-ui
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: feature
 priority: P0
 depends_on: [T-0011]

@@ -3,7 +3,7 @@ id: T-0009
 title: GDD v1 BATTLEROT et specs testables du duel minimal M1
 role: 02-game-designer
 phase: P1-greybox
-status: backlog
+status: review
 type: spec
 priority: P0
 depends_on: [T-0006]
@@ -39,4 +39,15 @@ python3 tools/check_repo.py
 
 ## Non verifie
 
-A remplir a la livraison.
+- Les cibles 7 a 10 min et 8 a 11 manches ne sont pas mesurees sur un vrai duel : aucun CombatSim ni DuelService
+  n'existe encore (T-0010, T-0011). Seul `tools/sim_duel_length.py` (modele sans combat) soutient la calibration des
+  degats au joueur (mediane 10 manches). La mesure reelle est celle de T-0015 (10 000 duels) et du playtest humain.
+- Le budget temps montre que 10 et 11 manches depassent 10 min si personne n'appuie sur "Pret" : hypothese H-07 du
+  GDD, a tester en playtest (HUMAN_ACTION), decision D-01 ouverte.
+- Les puissances des 10 competences M1 ne sont pas chiffrees (`Config.Skills` n'existe pas) : T-0010 les ajoute,
+  le Game Designer les relit.
+- La lecture "multiplicative" de la mort subite (D-04) et du Duo (D-05) est une interpretation du brief, non validee
+  par l'humain.
+- Les valeurs du brief §10.7 et §11.3 ne correspondent plus a la config (D-02, D-03) : le brief n'a pas ete modifie
+  dans ce ticket (source de verite validee P0), un ticket Game Designer est a ouvrir.
+- Rien n'a ete teste dans Roblox Studio (indisponible sur Linux) : HUMAN_ACTION.

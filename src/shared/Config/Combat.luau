@@ -97,19 +97,32 @@ local Combat = {
 	classOrder = { "Colosse", "Guerrier", "Assassin", "Artilleur", "Soigneur", "Mage", "Sprinteur" },
 	maxStatOverride = 0.15, -- ±15 % autour du gabarit (Game Designer)
 
-	-- §11.2 timeline : chaque unite avance de VIT par tick, agit a 1000, repart de 0.
+	-- §11.2 timeline : chaque unite avance de VIT par tick, agit a timelineThreshold, repart de 0.
+	-- Position de depart tiree dans [0, timelineStartRandomMax] + timelineStartVitMult * VIT.
 	timelineThreshold = 1000,
-	-- §11.3 energie : 100 max, +25 par attaque de base, +10 par coup recu, 0 au debut du combat.
+	timelineStartRandomMax = 200,
+	timelineStartVitMult = 2,
+	guardTimelineAdvance = 0.30, -- Garde : l'unite reprend a 30 % du seuil au lieu de 0
+	-- §11.3 energie : 20 au debut du combat, 100 max, +20 par attaque de base, +10 par coup recu, +30 par Garde.
+	energyStart = 20,
 	energyMax = 100,
-	energyPerBasicAttack = 25,
+	energyPerBasicAttack = 20,
 	energyPerHitTaken = 10,
-	guardDamageReduction = 0.50, -- Garde : -50 % degats subis jusqu'au prochain tour, +15 Energie
-	guardEnergyGain = 15,
+	guardDamageReduction = 0.50, -- Garde : -50 % degats subis jusqu'au prochain tour de l'unite
+	guardEnergyGain = 30,
+	-- §11.4 actions : Attaque de base, Duo (energie partagee), ordre Focus manuel
+	basicAttackPower = 1.00, -- physique, ATQ contre DEF
+	basicAttackMagicPower = 0.80, -- Soigneur et Mage : MAG contre RES
+	magicBasicAttackClasses = { "Soigneur", "Mage" },
+	duoEnergyCost = 50, -- par partenaire; les 2 partenaires doivent etre vivants et sans controle
+	duoPowerMultiplier = 1.20, -- Duo : chaque partenaire inflige une Attaque de base x 1.20 sur la meme cible
+	focusOrdersPerCombat = 1,
+	focusTurns = 2, -- toute l'equipe vise la cible pendant 2 tours d'equipe
 	-- §11.5 formules
 	damageVariance = { 0.95, 1.05 },
 	critMultiplier = 1.5,
 	minimumDamage = 1,
-	-- §11.10 limites
+	-- §11.10 limites : apres suddenDeathAfterActions, degats x (1 + ramp) ^ (actions - 40)
 	suddenDeathAfterActions = 40,
 	suddenDeathDamageRamp = 0.25,
 	drawAfterActions = 60,
@@ -117,6 +130,8 @@ local Combat = {
 	megaGaugeMax = 100,
 	megaGainPerSynergyAction = 4,
 	megaGainPerKO = 8,
+	megaUsesPerComboPerCombat = 1, -- chaque combo 1 fois par combat, jauge remise a 0 apres
+	megaAutoTriggerSeconds = 8, -- PvP : combo lance seul apres 8 s sans action du joueur
 	-- §10.6 plateau 2 lignes x 4 colonnes
 	boardRows = 2,
 	boardColumns = 4,

@@ -153,7 +153,60 @@ describe("Progression", function()
 	end)
 end)
 
+describe("Combat", function()
+	it("a exactement 13 statuts (brief §11.6)", function()
+		local n = 0
+		for _, def in Combat.statuses do
+			n += 1
+			expect(
+				def.kind == "control"
+					or def.kind == "debuff"
+					or def.kind == "dot"
+					or def.kind == "buff"
+			).toBe(true)
+		end
+		expect(n).toBe(13)
+	end)
+
+	it("a une energie coherente avec le brief §11.3", function()
+		expect(Combat.energyStart).toBe(20)
+		expect(Combat.energyPerBasicAttack).toBe(20)
+		expect(Combat.guardEnergyGain).toBe(30)
+		expect(Combat.energyPerHitTaken).toBe(10)
+		expect(Combat.energyStart + 4 * Combat.energyPerBasicAttack).toBe(Combat.energyMax)
+		for class, template in Combat.classes do
+			expect(template.skillCost <= Combat.energyMax).toBe(true)
+			expect(class).toBeTruthy()
+		end
+	end)
+
+	it("a des tactiques ordonnees Agressif < Equilibre < Prudent", function()
+		local t = Combat.tactics
+		expect(t.Agressif.guardBelowHp < t.Equilibre.guardBelowHp).toBe(true)
+		expect(t.Equilibre.guardBelowHp < t.Prudent.guardBelowHp).toBe(true)
+		expect(t.Equilibre.healerHoldsSkillAboveAllyHp < t.Prudent.healerHoldsSkillAboveAllyHp).toBe(
+			true
+		)
+	end)
+
+	it("a une mort subite avant le nul", function()
+		expect(Combat.suddenDeathAfterActions < Combat.drawAfterActions).toBe(true)
+		expect(Combat.timelineStartRandomMax < Combat.timelineThreshold).toBe(true)
+	end)
+end)
+
 describe("Duel", function()
+	it("inflige des degats au joueur qui tiennent dans targetRounds", function()
+		-- pire cas : 8 unites 2 etoiles survivantes au palier max
+		local worst = Duel.playerDamageBase + Duel.playerDamageTierMult * Duel.playerDamageTierCap
+		worst += Duel.playerDamageStarMult * 16
+		expect(worst < Duel.playerHp).toBe(true)
+		-- meilleur cas : 1 unite 1 etoile au palier 1, le duel ne peut pas depasser 40 manches PvP
+		local best = Duel.playerDamageBase + Duel.playerDamageTierMult + Duel.playerDamageStarMult
+		expect(math.ceil(Duel.playerHp / best) <= 40).toBe(true)
+		expect(Duel.targetRounds[1] < Duel.targetRounds[2]).toBe(true)
+	end)
+
 	it("a des probabilites de boutique qui somment a 1 pour chaque niveau", function()
 		for level = 2, Duel.maxLevel do
 			local sum = 0

@@ -3,6 +3,8 @@
 Ticket : T-0009. Source : brief §7.3, §9.1, §11. Config : `Config.Combat` (toutes les variables ci-dessous sont des
 champs de cette table, sauf mention), `Config.Rarities.statCoef`, `Config.Synergies`, `Config.Combos`.
 Tickets derives : T-0010 (CombatSim), T-0015 (QA). Spec parente : [M1-duel-minimal](M1-duel-minimal.md).
+Revision T-0024 (2026-10-02) : les interpretations de `docs/architecture/combat.md` section 6 sont confirmees ou
+corrigees ici, regle par regle, avec la mention "revise T-0024" (numeros R-M1-xx inchanges).
 Chaque regle `R-M1-xx` donne lieu a 1 test Lune dans `tests/unit/Combat*.spec.luau`. Le pseudo-code est normatif :
 memes noms, memes arrondis.
 
@@ -97,10 +99,12 @@ end
   Test : 4 Attaques depuis 20 donnent exactement 100.
 - R-M1-17 : Competence : disponible si `energy >= classes[class].skillCost` (Colosse 100, Guerrier 90, Assassin 80,
   Artilleur 100, Soigneur 70, Mage 100, Sprinteur 80) ; `energy -= skillCost` ; effet de la fiche §7.2. Une
-  competence ne donne pas `energyPerBasicAttack`.
+  competence ne donne pas `energyPerBasicAttack`. Revise T-0024 : une competence sans cible valable (handler qui
+  retourne `false`) est remplacee par une Attaque et `energy` n'est pas debitee (confirme section 6, point 7).
 - R-M1-18 : Garde : pose le marqueur `guarding = true` jusqu'a la prochaine action de l'unite (toute action, Skip
   compris) ; les degats subis sont multiplies par `guardDamageReduction` = 0,50 ; `energy += guardEnergyGain` = 30 ;
-  `timeline` R-M1-07.
+  `timeline` R-M1-07. Revise T-0024 : `guarding` est leve au debut de la prochaine action de l'unite, donc toute
+  l'attente jusqu'a 300 est protegee (confirme).
 - R-M1-19 : Duo : disponible si Couple 1 est actif, si le partenaire (`Roster[slug].duoPartners`) est vivant, sans
   statut de controle, et si les 2 ont `energy >= duoEnergyCost` = 50. Les 2 perdent 50 ; chacun inflige une Attaque
   (R-M1-10) de `power = basicAttackPower * duoPowerMultiplier` = 1,20 sur la meme cible (ciblage du lanceur) ; le
@@ -108,7 +112,8 @@ end
   avant la Competence quand il est disponible (R-M1-50).
 - R-M1-20 : Mega Combo : action d'equipe inseree avant la prochaine action alliee (R-M1-30 a R-M1-34).
 - R-M1-21 : une unite sous `Charme` joue une Attaque sur un allie tire au hasard parmi ses allies vivants (elle-meme
-  exclue) ; si elle est seule, l'action est `Skip`.
+  exclue) ; si elle est seule, l'action est `Skip`. Revise T-0024 : le tirage utilise le `Rng` du combat (1 appel
+  `NextInteger`), ce qui garde le determinisme M-C-01 (confirme).
 - R-M1-22 : Ta-ta-ta-ta (M1, `ta-ta-ta-ta-sahur`) : retire `Endormi` a tous les allies, puis `rng:NextNumber() < 0,50`
   => `Endormi` 1 tour sur 1 ennemi au hasard (R-M1-48 s'applique).
 - R-M1-23 : Grignotage (M1, `tim-cheese`) : 2 Attaques consecutives sur la meme cible, 1 seule action au compteur,
@@ -139,16 +144,26 @@ end
   declenchement, `mega = 0`.
 - R-M1-33 : en PvP, si un combo est disponible et que le joueur n'agit pas dans `megaAutoTriggerSeconds` = 8 s
   (temps client), le combo le plus puissant se lance seul ; le bot lance a 0 s. En simulation Lune, la decision est
-  un parametre de `simulate` (`autoMega = true` par defaut).
+  un parametre de `simulate` (`autoMega = true` par defaut). Revise T-0024 : en M1 le serveur declenche le combo a la
+  premiere action alliee qui suit la disponibilite, `megaAutoTriggerSeconds` n'est lu que par le client M2 (mode
+  manuel, `autoMega = false`) ; `megaUsesPerComboPerCombat` = 1 est compte par combo (confirme).
 - R-M1-34 : C05 "Declaration d'amour" (M1) : pour les 2 partenaires, `Bouclier` = floor(0,30 x HPmax) et soin de
   floor(0,25 x HPmax) (sans `HealPct`), puis chacun inflige une Attaque de `power` 2,00 sur la meme cible (ciblage du
-  partenaire le plus rapide). Compte 1 action au compteur. Les autres combos sont ignores en M1.
+  partenaire le plus rapide). Compte 1 action au compteur. Les autres combos sont ignores en M1. Revise T-0024 :
+  l'acteur de l'entree de journal est le partenaire le plus rapide (VIT puis case la plus basse), l'autre est
+  `partner` ; `targets` contient 4 entrees, 2 soins (valeurs negatives) puis 2 frappes ; les Boucliers suivent la
+  regle du maximum R-M1-44 (confirme).
 
 ### 3.7 Les 13 statuts (brief §11.6, `Combat.statuses`)
 
 Regles communes : un statut porte `kind`, une duree `turns` (tours de la cible) quand la config en donne une, sinon
 la duree donnee par la competence ; `turns` decremente a la fin de chaque tour de la cible (Skip compris) et le
 statut tombe a 0. Reposer un statut deja present remet `turns` au maximum (sauf `Saignement`, R-M1-42).
+Revise T-0024 (confirme) : (a) les 9 statuts sans `turns` dans `Combat.statuses` (Ralenti, Enracine, Brulure,
+Saignement, Expose, Bouclier, Provocation, Invisible, Epines) prennent la duree `ApplyOptions.turns` de la competence ;
+sans duree ils restent jusqu'au K.O. (Bouclier tombe aussi a `shield` = 0). En M1 seules les Provocations (1 tour) et
+les Boucliers sont poses. (b) Un statut `turns` = 1 pose pendant le tour de la cible n'est pas decremente a la fin de
+ce meme tour : il couvre la prochaine action de la cible (R-M1-35 "la prochaine action est Skip").
 
 - R-M1-35 : `Etourdi` (`control`, turns 1) : la prochaine action de la cible est `Skip` (R-M1-08).
 - R-M1-36 : `Endormi` (`control`, turns 1, `breaksOnDamage`) : comme `Etourdi`, mais tout degat > 0 retire le statut
@@ -183,20 +198,43 @@ Priorite commune a chaque tour d'une unite, premiere regle vraie : Mega Combo en
 Competence > Attaque. `t = tactics[tactique]`.
 
 - R-M1-50 : Garde si `hp / HPmax < t.guardBelowHp` et (`tactique == "Prudent"` ou un Soigneur allie est vivant).
-  `Agressif` : `guardBelowHp` = 0 => jamais de Garde. `Equilibre` : 0,25. `Prudent` : 0,40.
+  `Agressif` : `guardBelowHp` = 0 => jamais de Garde. `Equilibre` : 0,20. `Prudent` : 0,25. Revise T-0024 (D-10) :
+  le brief §11.7 donnait 0,25 et 0,40 ; a 0,40 une unite Prudent sous le seuil garde a chaque tour (Garde ne la
+  remonte jamais au-dessus du seuil) et le camp ne tue plus (R-M1-54 avant : Prudent 6,9 %).
 - R-M1-51 : Competence si `energy >= skillCost`, sauf Soigneur : il garde sa competence tant qu'aucun allie n'a
   `hp / HPmax < t.healerHoldsSkillAboveAllyHp` (Agressif 0 => soigne des que possible ; Equilibre 0,70 ;
   Prudent 0,85). Prudent : si l'unite a une competence defensive (Bouclier, Provocation, soin) et une offensive,
-  la defensive passe d'abord (M1 : aucune unite n'a les 2, test sur un faux roster).
-- R-M1-52 : cible d'une Attaque ou d'une Competence offensive : `Agressif` vise l'ennemi ciblable avec le plus petit
-  `hp` absolu ; `Equilibre` et `Prudent` appliquent la logique de classe : Assassin => ligne arriere la plus faible
-  (`hp` min) ; Artilleur => la ligne qui contient le plus d'unites vivantes (puis `hp` min) ; Colosse => l'ennemi qui
-  a inflige le plus de degats a l'equipe depuis le debut du combat ; autres classes => l'ennemi "en face" sinon
-  `hp` min.
+  la defensive passe d'abord (M1 : aucune unite n'a les 2, test sur un faux roster). Revise T-0024 (confirme) : un
+  Soigneur Agressif soigne des que `energy >= skillCost`, meme si tous les allies sont a PV pleins (soin de 0
+  journalise) : c'est le cout de "soigne des que possible", voulu pour differencier Agressif.
+- R-M1-52 (revise T-0024, D-10) : cible d'une Attaque ou d'une Competence offensive : `Agressif` vise l'ennemi
+  ciblable avec le plus petit `hp` absolu ; `Equilibre` et `Prudent` appliquent la logique de classe : Assassin =>
+  ligne arriere la plus faible (`hp` min) ; Artilleur => la ligne qui contient le plus d'unites vivantes (puis `hp`
+  min) ; Colosse => l'ennemi qui a inflige le plus de degats a l'equipe depuis le debut du combat ; autres classes
+  (Guerrier, Mage, Sprinteur, Soigneur) => l'ennemi ciblable avec le plus petit `hp` absolu. L'ancienne regle
+  "l'ennemi en face" pour les autres classes est retiree : elle dispersait les degats sur 5 cibles et ne tuait
+  jamais avant la mort subite (mesure D-10 : avec "en face", `Prudent` a `guardBelowHp` = 0 ne depasse pas 24 %).
+  La case "en face" ne sert plus que de depart d'egalite (R-M1-28).
 - R-M1-53 : la tactique par defaut est `Equilibre` ; elle est fixee par unite pendant `Preparation` et ne change pas
   pendant le combat (M1 : pas de changement en direct).
-- R-M1-54 : 100 combats "Agressif contre Prudent" avec 2 equipes identiques (miroir) donnent entre 35 % et 65 % de
-  victoires pour chaque camp (aucune tactique dominante au miroir, mesure T-0015).
+- R-M1-54 (revise T-0024, D-10) : 2 000 combats "Agressif contre Prudent" avec 2 equipes identiques (miroir)
+  donnent entre 35 % et 65 % de victoires pour chaque camp, nuls comptes dans le total (aucune tactique dominante au
+  miroir). Outil : `COMBAT_SIM_MIRROR=2000 lune run tests/run.luau sim/MirrorTactics` (seeds 1 a 2 000, 2
+  compositions : T1 = banano, bananella, glorbo-fruttodrillo, pomita, tim-cheese ; T2 = pomito, pomita, trippi-troppi,
+  myrtila, boneca-ambalabu). Le test unitaire garde 100 seeds sur T1 et affiche la mesure sans bloquer. Mesures :
+
+  | Config | T1 Agressif / Prudent / nuls | T2 Agressif / Prudent / nuls |
+  |---|---|---|
+  | Avant T-0024 (Garde 0,25 / 0,40, "en face") | 87,7 % / 6,9 % / 5,5 % | 95,6 % / 4,4 % / 0,0 % |
+  | Essai 1 : Prudent `guardBelowHp` = 0 (Prudent sans Garde) | 75,4 % / 24,0 % / 0,6 % (500 seeds) | non mesure |
+  | Essai 2 : `guardTimelineAdvance` = 0 | 77,2 % / 17,2 % / 5,6 % (500 seeds) | non mesure |
+  | Ciblage revise seul (Garde 0,25 / 0,40) | 84,4 % / 10,6 % / 5,0 % (500 seeds) | 53,6 % / 46,2 % / 0,2 % (500 seeds) |
+  | Ciblage revise + Garde 0,25 / 0,28 | 59,5 % / 37,7 % / 2,8 % | 58,2 % / 41,8 % / 0,0 % |
+  | Retenu : ciblage revise + Garde 0,20 / 0,25 | 54,5 % / 43,2 % / 2,3 % | 60,3 % / 39,7 % / 0,0 % |
+
+  Avec la config retenue, les autres paires restent dans la cible : Agressif / Equilibre 53,7 % / 45,4 % (T1) et
+  62,0 % / 38,0 % (T2) ; Equilibre / Prudent 45,9 % / 50,8 % (T1) et 47,0 % / 53,0 % (T2) ; Agressif / Agressif
+  49,9 % / 49,6 % (T1), ce qui mesure le biais de camp a 0,3 point. T-0015 reprend la mesure a 10 000 combats.
 
 ### 3.9 Interventions, limites et journal (brief §11.9 a §11.11)
 
@@ -209,14 +247,20 @@ Competence > Attaque. `t = tactics[tactique]`.
   multiplies par `(1 + suddenDeathDamageRamp) ^ (actions - suddenDeathAfterActions)` = 1,25 ^ (actions - 40),
   en position 5 de R-M1-13. Test : action 44 => x2,44 (arrondi 2 decimales), action 60 => x86,74.
 - R-M1-58 : nul : si `actions >= drawAfterActions` = 60 et que les 2 equipes ont encore une unite vivante, le combat
-  s'arrete avec `winner = nil` (spec duel D-M1-18).
+  s'arrete avec `winner = "draw"` (spec duel D-M1-18). Revise T-0024 : `"draw"` remplace `nil` (une chaine se
+  serialise et se compare, `nil` disparait d'une table) ; type `Winner = "A" | "B" | "draw"` dans
+  `Types/Combat.luau`.
 - R-M1-59 : victoire : des qu'une equipe n'a plus d'unite vivante ni `HorsCombat`, `winner` = l'autre equipe, le combat
-  s'arrete a la fin de l'action en cours. Si les 2 equipes tombent dans la meme action, `winner = nil`.
+  s'arrete a la fin de l'action en cours. Si les 2 equipes tombent dans la meme action, `winner = "draw"` (revise
+  T-0024, meme valeur que R-M1-58).
 - R-M1-60 : `ActionLog` : liste ordonnee de `{ t = actions, actor = slug.case, action = "Attack" | "Skill" | "Guard"
   | "Duo" | "Mega" | "Skip", targets = { case }, values = { degats ou soins par cible }, statuses = { poses et
   retires }, gauges = { energy acteur, mega equipe } }`, plus `turns` (nombre de ticks) et `winner`. Le format est
   versionne (`version = 1`) et documente dans `docs/architecture/combat.md` (T-0010). `MVP` de la manche = l'unite
-  avec `degats + soins` max.
+  avec `degats + soins` max. Revise T-0024 (confirme) : les soins comptes sont les soins appliques (au-dela de HPmax
+  exclu) ; a egalite, la premiere unite dans l'ordre A puis B, cases croissantes ; `turns` du resultat = nombre de
+  ticks de timeline, le compteur de R-M1-56 est `actions` ; 2 unites sur la meme case ou une case hors grille sont
+  des erreurs (`assert`), pas des combats.
 
 ## 4. Cas limites
 
@@ -238,4 +282,6 @@ Competence > Attaque. `t = tactics[tactique]`.
 - T-0010 : CombatSim, Timeline, Actions, Effects, Status, Rng ; `Config.Skills` (puissances des 10 competences M1) ;
   `docs/architecture/combat.md`.
 - T-0015 : harnais 10 000 combats, mesures M-C-02 a M-C-04, R-M1-54.
+- T-0024 : interpretations de T-0010 confirmees ou corrigees (section 6 de `docs/architecture/combat.md`), R-M1-52,
+  R-M1-54, R-M1-58, R-M1-59 revises, `tests/sim/MirrorTactics.spec.luau`, decision D-10.
 - A ouvrir (Game Designer) : brief §11.3 et §11.10 a aligner sur `Combat.luau` (decisions D-02, D-04, D-05 du GDD).

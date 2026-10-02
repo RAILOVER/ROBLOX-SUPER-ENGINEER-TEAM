@@ -153,11 +153,12 @@ local Combat = {
 	},
 	controlImmunityTurnsAfterControl = 1,
 	bossControlResistance = 0.50,
-	-- §11.7 tactiques automatiques
+	-- §11.7 tactiques automatiques. Seuils de Garde revises par D-10 (T-0024) : le brief donnait 0.25 / 0.40, mesure
+	-- au miroir R-M1-54 Agressif 88 % / Prudent 7 % ; avec 0.20 / 0.25 et le ciblage R-M1-52 revise : 54 % / 43 %.
 	tactics = {
 		Agressif = { guardBelowHp = 0, healerHoldsSkillAboveAllyHp = 0 },
-		Equilibre = { guardBelowHp = 0.25, healerHoldsSkillAboveAllyHp = 0.70 },
-		Prudent = { guardBelowHp = 0.40, healerHoldsSkillAboveAllyHp = 0.85 },
+		Equilibre = { guardBelowHp = 0.20, healerHoldsSkillAboveAllyHp = 0.70 },
+		Prudent = { guardBelowHp = 0.25, healerHoldsSkillAboveAllyHp = 0.85 },
 	},
 	manualTurnSeconds = 15, -- §11.8
 	pvpActionAnimationMaxSeconds = 0.8, -- §11.9

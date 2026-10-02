@@ -366,15 +366,18 @@ describe("R-M1-50 a R-M1-54 : tactiques", function()
 			pomito.hp = 1
 			expect(Tactics.wantsGuard(state, pomito)).toBe(false)
 			pomito.tactic = "Equilibre"
-			pomito.hp = math.floor(pomito.hpMax * 0.3)
+			pomito.hp = math.ceil(pomito.hpMax * 0.2)
 			expect(Tactics.wantsGuard(state, pomito)).toBe(false)
-			pomito.hp = math.floor(pomito.hpMax * 0.2)
+			pomito.hp = math.floor(pomito.hpMax * 0.15)
 			expect(Tactics.wantsGuard(state, pomito)).toBe(true)
 			Status.knockOut(state, pomita)
 			expect(Tactics.wantsGuard(state, pomito)).toBe(false)
 			pomito.tactic = "Prudent"
-			pomito.hp = math.floor(pomito.hpMax * 0.39)
+			pomito.hp = math.floor(pomito.hpMax * 0.24)
 			expect(Tactics.wantsGuard(state, pomito)).toBe(true)
+			pomito.hp = math.ceil(pomito.hpMax * 0.25)
+			expect(Tactics.wantsGuard(state, pomito)).toBe(false)
+			pomito.hp = math.floor(pomito.hpMax * 0.24)
 			expect(Tactics.decide(state, pomito).kind).toBe("Guard")
 		end
 	)
@@ -464,7 +467,7 @@ describe("R-M1-50 a R-M1-54 : tactiques", function()
 			local inTarget = winsA >= 35 and winsA <= 65 and winsB >= 35 and winsB <= 65
 			if not inTarget then
 				print(
-					"  R-M1-54 : hors cible avec les valeurs actuelles de Config, voir T-0024 (equilibrage T-0015)"
+					"  R-M1-54 : hors cible avec les valeurs actuelles de Config, voir D-10 (T-0024) et tests/sim/MirrorTactics"
 				)
 			end
 		end

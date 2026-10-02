@@ -1,5 +1,5 @@
 --!strict
--- Ciblage (R-M1-25 a R-M1-29, R-M1-52, R-M1-55). Toutes les egalites se departagent par la case "en face"
+-- Ciblage (R-M1-25 a R-M1-29, R-M1-52 revise T-0024, R-M1-55). Toutes les egalites se departagent par la case "en face"
 -- (meme colonne) puis la case la plus basse, pour rester deterministe.
 
 local Types = require(script.Parent.Parent.Types.Combat)
@@ -139,13 +139,6 @@ function Targeting.pickSingle(state: State, unit: Unit, pool: { Unit }): Unit?
 		return choose(unit, pool, function(c)
 			return team.damageFromEnemy[c.id] or 0
 		end, false)
-	end
-	for _, candidate in pool do
-		if candidate.col == unit.col then
-			return choose(unit, filterRow(pool, candidate.row), function()
-				return 0
-			end, true) or candidate
-		end
 	end
 	return lowestHp(unit, pool)
 end

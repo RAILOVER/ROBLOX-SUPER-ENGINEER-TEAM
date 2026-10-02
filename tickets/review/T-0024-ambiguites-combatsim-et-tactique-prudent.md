@@ -3,7 +3,7 @@ id: T-0024
 title: Ambiguites de la spec combat tranchees par T-0010 et tactique Prudent dominee au miroir (R-M1-54)
 role: 02-game-designer
 phase: P1-greybox
-status: backlog
+status: review
 type: spec
 priority: P1
 depends_on: [T-0010]
@@ -46,6 +46,20 @@ Equilibrage des valeurs de competences (T-0023) et harnais QA (T-0015).
 python3 tools/check_repo.py
 ```
 
+## Resultat (2026-10-02)
+
+- Points 1 a 7 confirmes dans la spec, regle par regle ("revise T-0024") : R-M1-17, R-M1-18, R-M1-21, R-M1-33,
+  R-M1-34, regles communes des statuts, R-M1-51, R-M1-58, R-M1-59, R-M1-60. `winner` nul = `"draw"`.
+- Point 8 : cause mesuree avec `tests/sim/MirrorTactics.spec.luau` (2 000 seeds). Aucune valeur simple de
+  `Combat.tactics` ne suffit (Prudent sans Garde : 24,0 %) : la cible "en face" de R-M1-52 disperse les degats.
+  Correction D-10 : R-M1-52 vise `hp` min pour les classes sans logique propre (`Targeting.pickSingle`) et Garde
+  Equilibre 0,20 / Prudent 0,25. Avant : Agressif 87,7 % / Prudent 6,9 % / nuls 5,5 %. Apres : 54,5 % / 43,2 % /
+  2,3 %. Test R-M1-50 mis a jour sur les nouveaux seuils dans le meme commit.
+
 ## Non verifie
 
-A remplir a la livraison.
+- La mesure R-M1-54 a 10 000 combats et sur d'autres compositions que T1 et T2 (5 unites M1) : T-0015.
+- L'effet de D-10 sur le duel complet contre le bot (D-M1-30 met les Colosses du bot en Prudent) : pas de harnais
+  duel sous Lune, T-0011 en cours.
+- Le brief §11.7 (Garde 25 % / 40 %) n'est pas modifie : mise a jour a faire par le ticket d'alignement du brief
+  deja prevu (spec combat section 5).

@@ -3,7 +3,7 @@ id: T-0013
 title: Arene greybox Spiaggia Tralala en Parts (script de construction)
 role: 08-level-designer
 phase: P1-greybox
-status: backlog
+status: review
 type: feature
 priority: P1
 depends_on: [T-0009]
@@ -37,4 +37,12 @@ python3 tools/check_repo.py
 
 ## Non verifie
 
-A remplir a la livraison (capture Studio = HUMAN_ACTION).
+- Rendu dans Roblox Studio (aucun Studio sur la VM Linux de l'agent) : cadrage reel des 3 cameras en paysage
+  mobile, lisibilite bleu / orange a l'ecran, decor qui ne cache aucune case. HUMAN_ACTION : suivre la
+  section "Ce que l'humain doit verifier dans Studio" de `design/levels/arena-01/README.md` et joindre une
+  capture (emulateur 19.5:9 et 16:9) a la PR.
+- `ArenaBuilder.build` (Instances Roblox : Part, SpawnLocation, Model.ModelStreamingMode) n'est pas execute
+  sous Lune ; seuls lint, luau-lsp strict et les tests de la partie pure (`ArenaGeometry`) le couvrent. Le
+  comptage de 82 Parts est calcule depuis le layout, pas mesure dans Studio.
+- Comportement StreamingEnabled en conditions reelles (Model Persistent) : a verifier sur un vrai appareil
+  mobile, pas seulement dans l'emulateur Studio.

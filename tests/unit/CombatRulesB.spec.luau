@@ -464,7 +464,7 @@ describe("R-M1-50 a R-M1-54 : tactiques", function()
 			local inTarget = winsA >= 35 and winsA <= 65 and winsB >= 35 and winsB <= 65
 			if not inTarget then
 				print(
-					"  R-M1-54 : hors cible avec les valeurs actuelles de Config, voir T-0022 (equilibrage T-0015)"
+					"  R-M1-54 : hors cible avec les valeurs actuelles de Config, voir T-0024 (equilibrage T-0015)"
 				)
 			end
 		end

@@ -152,7 +152,7 @@ Commande : `lune run tests/run.luau Robustness` (10 000 combats par defaut, `COM
 | 1 000 combats | 1,14 s, 13 nuls (1,30 %) |
 | Determinisme (M-C-01) | 100 seeds, 100 journaux identiques |
 | Couverture (M-C-05) | 60 `it` nommes R-M1-01 a R-M1-60, tous verts |
-| R-M1-54 (miroir Agressif contre Prudent, 5 unites M1, 100 seeds) | Agressif 86, Prudent 8, nuls 6 : hors cible 35 a 65, ticket T-0022 |
+| R-M1-54 (miroir Agressif contre Prudent, 5 unites M1, 100 seeds) | Agressif 86, Prudent 8, nuls 6 : hors cible 35 a 65, ticket T-0024 |
 
 La duree de 10 000 combats est sous la limite de 60 s : le spec de robustesse garde 10 000 par defaut.
 

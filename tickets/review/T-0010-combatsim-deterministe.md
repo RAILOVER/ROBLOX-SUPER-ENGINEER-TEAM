@@ -47,7 +47,7 @@ lune run tests/run.luau Combat
 - Tests : `tests/unit/CombatDeterminism`, `CombatRulesA` (R-M1-01 a 30), `CombatRulesB` (R-M1-31 a 60),
   `CombatRobustness` (10 000 combats), `CombatModuleSize`. `tests/run.luau` : chargement `loadShared("Dossier/Module")`,
   duree affichee, `LUNE_TEST_TIMER=1` pour la duree par spec.
-- `docs/architecture/combat.md`. Tickets ouverts : T-0021 (relecture Skills), T-0022 (ambiguites, R-M1-54).
+- `docs/architecture/combat.md`. Tickets ouverts : T-0023 (relecture Skills), T-0024 (ambiguites, R-M1-54).
 - Mesures : 10 000 combats en 10,88 s, 0 erreur, 0,88 % de nuls, 37,5 actions en moyenne, maximum 60.
 
 ## Non verifie
@@ -56,8 +56,8 @@ lune run tests/run.luau Combat
   `CombatConfig = typeof(require(script.Parent.Parent.Config))` et les `require` relatifs sont valides par luau-lsp
   avec la sourcemap Rojo, pas en jeu.
 - R-M1-54 (miroir Agressif contre Prudent entre 35 et 65 %) : mesure 86 / 8 / 6, hors cible. Le test affiche la
-  mesure sans echouer ; la decision revient au Game Designer (T-0022) et au QA (T-0015).
-- Valeurs de `Config.Skills` : provisoires, non relues (T-0021).
+  mesure sans echouer ; la decision revient au Game Designer (T-0024) et au QA (T-0015).
+- Valeurs de `Config.Skills` : provisoires, non relues (T-0023).
 - Effets des synergies de palier 2 et plus et combos autres que C05 : non implementes, journalises dans
   `result.unimplemented` (comportement verifie, valeurs non).
 - Performance dans le runtime Roblox (le chiffre de 10,88 s est mesure sous Lune 0.10.5).

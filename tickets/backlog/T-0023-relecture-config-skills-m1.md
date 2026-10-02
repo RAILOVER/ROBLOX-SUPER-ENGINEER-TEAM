@@ -1,5 +1,5 @@
 ---
-id: T-0021
+id: T-0023
 title: Relecture des valeurs de Config.Skills (10 competences M1 et competence par defaut)
 role: 02-game-designer
 phase: P1-greybox

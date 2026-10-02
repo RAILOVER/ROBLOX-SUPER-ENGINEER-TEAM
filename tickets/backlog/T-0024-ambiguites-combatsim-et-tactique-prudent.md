@@ -1,5 +1,5 @@
 ---
-id: T-0022
+id: T-0024
 title: Ambiguites de la spec combat tranchees par T-0010 et tactique Prudent dominee au miroir (R-M1-54)
 role: 02-game-designer
 phase: P1-greybox
@@ -38,7 +38,7 @@ Trancher chaque point, mettre a jour la spec et ouvrir un ticket 04-dev-serveur 
 
 ## Hors perimetre
 
-Equilibrage des valeurs de competences (T-0021) et harnais QA (T-0015).
+Equilibrage des valeurs de competences (T-0023) et harnais QA (T-0015).
 
 ## Verification
 

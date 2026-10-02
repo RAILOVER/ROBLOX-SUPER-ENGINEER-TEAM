@@ -3,7 +3,7 @@ id: T-0014
 title: Bible de style BATTLEROT v1 et references des 10 unites M1
 role: 03-directeur-artistique
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: spec
 priority: P1
 depends_on: [T-0009]

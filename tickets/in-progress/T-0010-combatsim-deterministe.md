@@ -3,7 +3,7 @@ id: T-0010
 title: CombatSim deterministe (tour par tour, synergies, Mega Combo)
 role: 04-dev-serveur
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: feature
 priority: P0
 depends_on: [T-0009]

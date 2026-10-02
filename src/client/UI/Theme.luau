@@ -140,7 +140,9 @@ end
 function Theme.setEnabled(button: TextButton, enabled: boolean, activeColor: Color3?)
 	button.Active = enabled
 	button.AutoButtonColor = enabled
-	button.BackgroundColor3 = if enabled then (activeColor or Theme.colors.blue) else Theme.colors.steel
+	button.BackgroundColor3 = if enabled
+		then (activeColor or Theme.colors.blue)
+		else Theme.colors.steel
 	button.TextTransparency = if enabled then 0 else 0.45
 	button:SetAttribute("Enabled", enabled)
 end

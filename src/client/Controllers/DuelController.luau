@@ -46,7 +46,7 @@ end
 
 local function emit<T>(list: { Listener<T> }, payload: T)
 	for _, listener in table.clone(list) do
-		local ok, err = pcall(listener, payload)
+		local ok, err = pcall(listener :: any, payload)
 		if not ok then
 			warn(`[DuelController] listener en erreur : {err}`)
 		end
@@ -116,7 +116,7 @@ end
 -- Envoie une intention nommee dans le contrat. Retourne false si le remote manque ou si le cooldown contractuel
 -- (DuelRemotes.COOLDOWN_SECONDS) n'est pas ecoule : le serveur l'aurait ignoree de toute facon.
 function DuelController.send(name: string, ...: any): boolean
-	local remote = sendRemotes[name]
+	local remote: RemoteEvent? = sendRemotes[name]
 	if remote == nil then
 		warn(`[DuelController] intention inconnue ou non branchee : {name}`)
 		return false
@@ -196,7 +196,8 @@ end
 -- C'est une lecture du contrat, pas une decision : le serveur reste juge.
 function DuelController.isIntentOpen(name: string): boolean
 	local def = DuelRemotes.clientToServer[name]
-	if def == nil or sendRemotes[name] == nil then
+	local remote: RemoteEvent? = sendRemotes[name]
+	if def == nil or remote == nil then
 		return false
 	end
 	if def.phase == nil then

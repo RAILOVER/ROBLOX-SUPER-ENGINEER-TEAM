@@ -17,7 +17,7 @@ for slug in Config.Roster.units do
 end
 table.sort(slugs)
 
-local function randomTeam(rng, size: number, pool: { string})
+local function randomTeam(rng, size: number, pool: { string })
 	local cells = {}
 	for cell = 0, 7 do
 		table.insert(cells, cell)
@@ -77,7 +77,9 @@ local function measure(label: string, pool: { string }, seedBase: number): numbe
 			if step.kind == "Mega" then
 				expect(step.durationSeconds).toBe(PlaybackPlan.MEGA_SECONDS)
 			else
-				expect(step.durationSeconds <= Config.Combat.pvpActionAnimationMaxSeconds).toBe(true)
+				expect(step.durationSeconds <= Config.Combat.pvpActionAnimationMaxSeconds).toBe(
+					true
+				)
 			end
 			expect(step.durationSeconds >= PlaybackPlan.MIN_SECONDS).toBe(true)
 		end
@@ -93,7 +95,10 @@ local function measure(label: string, pool: { string }, seedBase: number): numbe
 		`  M-C-04 {label} : {COUNT} combats, {string.format("%.1f", totalActions / COUNT)} actions en moyenne, duree du plan {string.format(
 			"%.1f",
 			average
-		)} s en moyenne (min {string.format("%.1f", minSeconds)}, max {string.format("%.1f", maxSeconds)}) ; a 0,8 s fixe : {string.format(
+		)} s en moyenne (min {string.format("%.1f", minSeconds)}, max {string.format(
+			"%.1f",
+			maxSeconds
+		)}) ; a 0,8 s fixe : {string.format(
 			"%.1f",
 			totalActions / COUNT * Config.Combat.pvpActionAnimationMaxSeconds
 		)} s`
@@ -165,15 +170,21 @@ describe("PlaybackPlan (T-0012)", function()
 		expect(PlaybackPlan.finalHp(plan).B0).toBe(300)
 	end)
 
-	it(`{COUNT} combats L0 (tailles egales 2 a 8) : 1 etape par entree, PV finaux identiques, 20 a 35 s`, function()
-		local average = measure("L0", slugs, 20261012)
-		expect(average).toBeGreaterThanOrEqual(20)
-		expect(average).toBeLessThanOrEqual(35)
-	end)
+	it(
+		`{COUNT} combats L0 (tailles egales 2 a 8) : 1 etape par entree, PV finaux identiques, 20 a 35 s`,
+		function()
+			local average = measure("L0", slugs, 20261012)
+			expect(average).toBeGreaterThanOrEqual(20)
+			expect(average).toBeLessThanOrEqual(35)
+		end
+	)
 
-	it(`{COUNT} combats M1 (10 unites, tailles egales 2 a 8) : 1 etape par entree, PV finaux identiques, 20 a 35 s`, function()
-		local average = measure("M1", Config.Skills.m1Slugs, 20261013)
-		expect(average).toBeGreaterThanOrEqual(20)
-		expect(average).toBeLessThanOrEqual(35)
-	end)
+	it(
+		`{COUNT} combats M1 (10 unites, tailles egales 2 a 8) : 1 etape par entree, PV finaux identiques, 20 a 35 s`,
+		function()
+			local average = measure("M1", Config.Skills.m1Slugs, 20261013)
+			expect(average).toBeGreaterThanOrEqual(20)
+			expect(average).toBeLessThanOrEqual(35)
+		end
+	)
 end)

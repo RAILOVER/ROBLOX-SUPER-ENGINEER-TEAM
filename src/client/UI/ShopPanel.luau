@@ -36,10 +36,10 @@ function ShopPanel.new(parent: Instance): ShopPanel
 		slot:SetAttribute("SlotIndex", index)
 		Theme.corner(slot, 6)
 		local name = Theme.label("Name", slot, "", 11)
-		name.Size = UDim2.new(1, 0, 0.6, 0)
+		name.Size = UDim2.fromScale(1, 0.6)
 		name.Position = UDim2.fromScale(0, 0)
 		local cost = Theme.label("Cost", slot, "", 12)
-		cost.Size = UDim2.new(1, 0, 0.4, 0)
+		cost.Size = UDim2.fromScale(1, 0.4)
 		cost.Position = UDim2.fromScale(0, 0.6)
 		cost.TextColor3 = Theme.colors.gold
 		cost.Font = Theme.FONT
@@ -50,12 +50,20 @@ function ShopPanel.new(parent: Instance): ShopPanel
 	buttons.Size = UDim2.fromOffset(96, SLOT_PX)
 	buttons.LayoutOrder = Config.Duel.shopSlots + 1
 	Theme.listLayout(buttons, Enum.FillDirection.Vertical, 4)
-	local rerollButton =
-		Theme.button("ui_shop_button_reroll", buttons, `Relance ({Config.Duel.rerollCost} or)`, Theme.colors.orange)
+	local rerollButton = Theme.button(
+		"ui_shop_button_reroll",
+		buttons,
+		`Relance ({Config.Duel.economy.rerollCost} or)`,
+		Theme.colors.orange
+	)
 	rerollButton.Size = UDim2.new(1, 0, 0, 30)
 	rerollButton.LayoutOrder = 1
-	local xpButton =
-		Theme.button("ui_shop_button_xp", buttons, `XP ({Config.Duel.xpCost} or)`, Theme.colors.purple)
+	local xpButton = Theme.button(
+		"ui_shop_button_xp",
+		buttons,
+		`XP ({Config.Duel.economy.xpCost} or)`,
+		Theme.colors.purple
+	)
 	xpButton.Size = UDim2.new(1, 0, 0, 30)
 	xpButton.LayoutOrder = 2
 
@@ -82,7 +90,9 @@ function ShopPanel.render(self: ShopPanel, shop: { Types.ShopSlot }, interactive
 		end
 		name.Text = Theme.unitName(entry.slug)
 		cost.Text = if entry.sold then "VENDU" else `{entry.cost} or`
-		slot.BackgroundColor3 = if entry.sold then Theme.colors.steel else Theme.familyColor(entry.slug)
+		slot.BackgroundColor3 = if entry.sold
+			then Theme.colors.steel
+			else Theme.familyColor(entry.slug)
 		slot.BackgroundTransparency = if entry.sold then 0.5 else 0
 		slot:SetAttribute("Sold", entry.sold)
 		slot:SetAttribute("Slug", entry.slug)

@@ -3,7 +3,7 @@ id: T-0024
 title: Ambiguites de la spec combat tranchees par T-0010 et tactique Prudent dominee au miroir (R-M1-54)
 role: 02-game-designer
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: spec
 priority: P1
 depends_on: [T-0010]

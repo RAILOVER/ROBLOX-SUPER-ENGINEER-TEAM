@@ -18,6 +18,8 @@ jobs:
       - uses: CompeyDev/setup-rokit@v0.1.2
       - name: lint luau
         run: tools/lint.sh
+      - name: tests lune
+        run: lune run tests/run.luau
   blender-gate:
     runs-on: ubuntu-latest
     steps:

@@ -11,9 +11,9 @@ for tool in selene stylua luau-lsp rojo; do
 done
 
 if [[ "${1:-}" == "--fix" ]]; then
-	stylua src
+	stylua src tests
 else
-	stylua --check src
+	stylua --check src tests
 fi
 selene src
 rojo sourcemap default.project.json -o sourcemap.json

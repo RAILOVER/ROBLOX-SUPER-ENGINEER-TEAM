@@ -20,3 +20,7 @@ node_modules/
 globalTypes.d.luau
 *.fbx
 !assets/meshes/export/.gitkeep
+
+# Harnais QA (T-0015) : sorties de simulation, sauf l echantillon commite
+tests/sim/out/*
+!tests/sim/out/duels-sample-1000-m1.csv

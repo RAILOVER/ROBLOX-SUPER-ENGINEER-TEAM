@@ -47,3 +47,16 @@ Un ticket est `done` quand:
 2. `check_repo.py` et les scripts concernes renvoient 0;
 3. la PR est revue par le QA (code) ou le DA (visuel) selon le type;
 4. ce qui n'a pas ete verifie est ecrit noir sur blanc dans la PR.
+
+## Correspondance avec les jalons BATTLEROT
+
+Le brief `design/brief/BATTLEROT.md` (§21) decoupe le jeu en jalons P0, M0 a M6. Ils s'emboitent dans les phases ci-dessus
+sans en changer les gates :
+
+| Jalon BATTLEROT | Phase du process | Gate humain |
+|---|---|---|
+| P0 validation du brief | P0 preparation | brief et lot L0 valides par l'humain (T-0007) |
+| M0 cadrage, M1 greybox jouable | P1 greybox | duel jouable en cubes, 5 testeurs humains |
+| M2 vertical slice, M3 contenu | P2 vertical slice | 45 FPS telephone bas de gamme, premiere arene finale |
+| M4 meta et ranked, M5 polish | P3 alpha | audit securite, session locking, beta fermee |
+| M6 publication | P4 soft launch puis P5 live ops | decision humaine de publication |

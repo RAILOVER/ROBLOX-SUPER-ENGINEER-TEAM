@@ -41,12 +41,20 @@ tests/            tests Luau (Jest Lua / TestEZ) et scenarios de playtest bot
 docs/             procedures outillage: Rojo, MCP Studio, playtests humains
 ```
 
+## Projet en cours : BATTLEROT
+
+Auto battler TFT x cartes Clash Royale x combat tour par tour Final Fantasy, avec des brainrots. Source de verite :
+`design/brief/BATTLEROT.md` (audit du prompt d'origine dans `docs/reviews/BATTLEROT-audit-prompt-2026-10-01.md`).
+Roster par lots dans `design/roster/` et `src/shared/Config/Roster/`; tendances memes dans `docs/reports/trends-*.md`
+(`python3 tools/trends/fetch_trends.py`, sans cle). Les tickets P0 / M0 / M1 sont dans `tickets/`.
+
 ## Commandes de verification
 
 ```bash
 tools/install_toolchain.sh                      # rojo, selene, stylua, luau-lsp, lune, wally (Linux x86_64)
 python3 tools/check_repo.py                     # coherence tickets / roles / skills / liens / Luau / Rojo
 tools/lint.sh                                   # stylua --check, selene, luau-lsp analyze
+lune run tests/run.luau                         # tests unitaires Lune (specs *.spec.luau, API describe/it/expect)
 python3 tools/check_textures.py                 # nommage, puissance de 2, jeux PBR complets
 blender -b assets/meshes/source/<f>.blend --python tools/blender/validate_mesh.py -- \
   --budgets art/budgets/budgets.yaml --report assets/meshes/reports/<f>.json --export assets/meshes/export

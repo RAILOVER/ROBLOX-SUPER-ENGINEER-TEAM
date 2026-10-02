@@ -150,6 +150,12 @@ distinctes de meme taille, Equilibre, 1 etoile, seed 20261002 ; taux = combats g
 | `glorbo-fruttodrillo` | 54,7 % | 53,5 % | 1,23 |
 | `boneca-ambalabu` | 54,6 % | 54,9 % | 1,23 |
 
+Harnais QA T-0015 (`lune run tests/sim/run_duels.luau 2000 20261002 --m1`, equipes de 2 a 8 unites de meme taille,
+doublons et tactiques melangees, chaque paire jouee dans les 2 sens), % hors nuls avant / apres T-0023 :
+trippi-troppi 57,1 / 57,6 ; boneca-ambalabu 54,5 / 53,6 ; pomita 50,8 / 50,9 ; glorbo-fruttodrillo 50,7 / 50,1 ;
+pomito 49,9 / 49,7 ; bananella 48,9 / 49,2 ; myrtila 48,4 / 48,8 ; ta-ta-ta-ta-sahur 48,0 / 48,8 ; banano 45,8 /
+45,9 ; tim-cheese 45,7 / 45,3. Les 10 unites restent dans la fenetre 40 a 60 % avant et apres ; nuls 4,1 %.
+
 Lecture : les competences pesent peu sur le taux de victoire (1 lancer par combat en moyenne) ; un essai a `power`
 2,4 pour `ta-ta-ta-ta-sahur` et `bananella` ne les monte qu'a 44,3 % et 45,2 %. L'ecart de 10 points entre les
 Colosses (HP 1 400) et les unites a 750 PV (Mage, Artilleur) vient des stats de classe `Combat.classes`, hors

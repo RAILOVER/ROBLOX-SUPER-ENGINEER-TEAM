@@ -63,6 +63,8 @@ lune run tests/run.luau Combat
 - Test R-M1-24 : le Bouclier de banano est lu depuis `Config.Skills` (0,25) dans le meme commit.
 - Mesure 2 000 combats (`tests/sim/UnitWinRates.spec.luau`) avant / apres : au plus 3 points de deplacement ; les
   stats de classe dominent (decision D-11 ouverte au GDD).
+- Harnais T-0015 (`run_duels.luau 2000 20261002 --m1`, apres merge de la base) avant / apres : les 10 unites dans
+  la fenetre 40 a 60 % hors nuls dans les 2 cas, deplacement de 1 point au plus (tableau dans la spec section 4).
 
 ## Non verifie
 

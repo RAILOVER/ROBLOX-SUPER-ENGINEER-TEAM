@@ -8,7 +8,9 @@ local Duel = {
 	playerHp = 100,
 	pveRounds = { 1, 6, 11 },
 	pveRewardGold = 3,
-	prepSecondsEarly = 20, -- manches 1 a 3
+	prepSecondsEarly = 20, -- manches 1 a prepSecondsEarlyRounds
+	prepSecondsEarlyRounds = 3,
+	prepReadySkipSeconds = 3, -- les 2 joueurs prets : le combat demarre apres 3 s
 	prepSecondsLate = 30,
 	economy = {
 		startGold = 3,
@@ -37,8 +39,12 @@ local Duel = {
 		[7] = { 0.19, 0.30, 0.35, 0.15, 0.01 },
 		[8] = { 0.15, 0.20, 0.35, 0.25, 0.05 },
 	},
-	-- degats au joueur (§10.7) : 2 + palier + somme des etoiles survivantes, palier = ceil(manche / 3) plafonne a 5
-	playerDamageBase = 2,
+	-- degats au joueur (§10.7) : base + tierMult * palier + starMult * somme des etoiles survivantes,
+	-- palier = ceil(manche / 3) plafonne a tierCap; manche nulle : chaque joueur subit floor(degats / 2).
+	-- Valeurs calibrees pour targetRounds par tools/sim_duel_length.py (mediane 10 manches).
+	playerDamageBase = 6,
+	playerDamageTierMult = 4,
+	playerDamageStarMult = 2,
 	playerDamageTierCap = 5,
 	targetRounds = { 8, 11 },
 	ghostAfterSeconds = 15,

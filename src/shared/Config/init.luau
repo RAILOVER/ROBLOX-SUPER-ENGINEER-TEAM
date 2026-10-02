@@ -13,4 +13,5 @@ return table.freeze({
 	Duel = require(script.Duel),
 	Eggs = require(script.Eggs),
 	Limits = require(script.Limits),
+	Arenas = require(script.Arenas),
 })

@@ -111,13 +111,19 @@ Une competence avec un `effectId` inconnu joue comme `PowerStrike` et est journa
 
 ## 6. Decisions et interpretations retenues
 
+Statut T-0024 (2026-10-02) : chaque point ci-dessous est confirme dans `design/specs/M1-combat-tour-par-tour.md`
+(mention "revise T-0024" sur la regle concernee), sauf 2 corrections : R-M1-52 (plus de cible "en face" pour les
+classes sans logique propre, `Targeting.pickSingle` retombe sur `hp` min) et les seuils de Garde `Combat.tactics`
+(Equilibre 0,20, Prudent 0,25), decision D-10 du GDD.
+
 - D-04 (mort subite) : multiplicative, `1,25 ^ (actions - 40)` sur les degats de formule et les dots, position 5 des
   mods. Action 44 => x2,44 ; action 60 => x86,74.
 - D-05 (Duo) : 2 Attaques separees a x1,20 sur la meme cible (ciblage du lanceur), chaque frappe a sa propre variance
   et son propre critique ; 1 action ; 50 energie debites a chacun ; la timeline du partenaire ne bouge pas.
 - D-07 (Tentafruit 2) : actif par defaut (`EnergyGainPct` 15 %, arrondi inferieur), desactivable par
   `options.tentafruitEnabled = false` pour les mesures du QA.
-- Nul : `winner = "draw"` (le ticket) au lieu de `nil` (la spec), voir §2.
+- Nul : `winner = "draw"` (le ticket) au lieu de `nil` (la spec), voir §2. Confirme par T-0024 : R-M1-58 et R-M1-59
+  ecrivent `"draw"`.
 - Statuts sans `turns` dans `Config.Combat.statuses` (Ralenti, Enracine, Brulure, Saignement, Expose, Bouclier,
   Provocation, Invisible, Epines) : la duree vient de la competence (`ApplyOptions.turns`) ; sans duree, le statut
   reste jusqu'au K.O. (ou a 0 pour Bouclier). En M1 seules les Provocations (1 tour) et les Boucliers sont poses.
@@ -152,7 +158,8 @@ Commande : `lune run tests/run.luau Robustness` (10 000 combats par defaut, `COM
 | 1 000 combats | 1,14 s, 13 nuls (1,30 %) |
 | Determinisme (M-C-01) | 100 seeds, 100 journaux identiques |
 | Couverture (M-C-05) | 60 `it` nommes R-M1-01 a R-M1-60, tous verts |
-| R-M1-54 (miroir Agressif contre Prudent, 5 unites M1, 100 seeds) | Agressif 86, Prudent 8, nuls 6 : hors cible 35 a 65, ticket T-0024 |
+| R-M1-54 (miroir Agressif contre Prudent, 5 unites M1, 100 seeds, config T-0010) | Agressif 86, Prudent 8, nuls 6 : hors cible 35 a 65, corrige par T-0024 |
+| R-M1-54 apres T-0024 (2 000 seeds, `tests/sim/MirrorTactics`, equipe T1) | Agressif 54,5 %, Prudent 43,2 %, nuls 2,3 % (D-10) |
 
 La duree de 10 000 combats est sous la limite de 60 s : le spec de robustesse garde 10 000 par defaut.
 

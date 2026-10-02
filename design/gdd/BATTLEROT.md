@@ -54,12 +54,13 @@ un duel complet contre un bot et entre 2 joueurs. Les deux specs M1 donnent une 
 | D-01 | Preparation : 20 s manches 1 a 3 puis 30 s (brief §10.2) ou 30 s partout ? Config garde le brief. | A : brief ; B : 30 s partout ; C : 25 s partout | humain, apres A/B M4 | M2 |
 | D-02 | Energie de depart et gains : le brief §11.3 (20 au depart, +20 attaque, +30 Garde) remplace les anciennes valeurs de `Combat.luau` (0, +25, +15). Applique en T-0009. | garder le brief | Game Designer | fait |
 | D-03 | Degats au joueur : la formule du brief §10.7 (2 + palier + etoiles) donne une mediane de 20 manches dans `tools/sim_duel_length.py`, hors cible 8 a 11. Config passee a 6 + 4 x palier + 2 x etoiles (mediane 10). Le brief doit etre mis a jour. | A : config actuelle ; B : revenir au brief et baisser `playerHp` a 50 | Game Designer, verifie par T-0015 | M1 |
-| D-04 | Mort subite : "+25 % cumules" lu comme multiplicatif (x1,25 par action au-dela de 40). Alternative additive (+25 points de % par action). | A : multiplicatif ; B : additif | Game Designer, mesure T-0015 (part de nuls < 2 %) | M1 |
-| D-05 | Duo : "2 x 120 %" lu comme chaque partenaire inflige une Attaque de base x 1,20. | A : 2 attaques ; B : 1 coup de 240 % | Game Designer | M1 |
+| D-04 | Mort subite : "+25 % cumules" lu comme multiplicatif (x1,25 par action au-dela de 40). Alternative additive (+25 points de % par action). Ferme par T-0024 : A, mesure T-0010 10 000 combats aleatoires = 0,88 % de nuls (cible < 2 %). | A : multiplicatif | fait (T-0024) | fait |
+| D-05 | Duo : "2 x 120 %" lu comme chaque partenaire inflige une Attaque de base x 1,20. Ferme par T-0024 : A, 2 frappes separees avec variance et critique propres (R-M1-19). | A : 2 attaques | fait (T-0024) | fait |
 | D-06 | Bot M1 : achats ponderes vers les synergies (spec duel §5) ou copie de plateaux enregistres (fantome, §10.8) ? | A : heuristique ; B : fantome | Dev serveur (cout) | M1 |
-| D-07 | Tentafruit 2 (energie +15 %) : 5e synergie activable en M1, implementee si budget, sinon desactivee par drapeau. | A : implementer ; B : drapeau | Dev serveur | M1 |
+| D-07 | Tentafruit 2 (energie +15 %) : 5e synergie activable en M1, implementee si budget, sinon desactivee par drapeau. Ferme par T-0024 : A, actif par defaut, `options.tentafruitEnabled = false` pour les mesures QA. | A : implementer | fait (T-0010, T-0024) | fait |
 | D-08 | Ordre fixe des modificateurs multiplicatifs (brief §11.5 "documente dans le code") : fige par R-M1-13. | aucune | fait | fait |
 | D-09 | Nombre d'exemplaires du pool pour un deck sans Epique : le tirage retombe sur le cout inferieur (§10.5). Impact sur la vitesse de 3 etoiles non mesure. | mesurer | QA T-0015 | M2 |
+| D-10 | Tactique Prudent dominee au miroir (R-M1-54) : avant, 2 000 combats miroir 5 unites M1 donnaient Agressif 87,7 % / Prudent 6,9 % / nuls 5,5 % (brief §11.7 : Garde Equilibre sous 25 %, Prudent sous 40 % ; spec : classes sans logique propre visent "en face"). Cause mesuree : la cible "en face" disperse les degats (Prudent sans aucune Garde plafonne a 24,0 %) et la Garde a 40 % boucle (l'unite garde a chaque tour sans jamais remonter). Correction : R-M1-52 vise `hp` min pour toutes les classes sans logique propre et `Combat.tactics` passe a Equilibre 0,20 / Prudent 0,25. Apres : Agressif 54,5 % / Prudent 43,2 % / nuls 2,3 % (T1) et 60,3 % / 39,7 % / 0,0 % (T2) ; Agressif / Equilibre 53,7 % / 45,4 % ; Equilibre / Prudent 45,9 % / 50,8 %. Essai ecarte : Prudent 0,28 seul (59,5 % / 37,7 %, marge de 2,7 points). Le brief §11.7 est a mettre a jour. | A : ciblage + Garde 0,20 / 0,25 ; B : Garde 0,28 seule | Game Designer (T-0024), verifie par T-0015 a 10 000 combats | fait |
 
 ## 4. Hypotheses a tester en playtest (humain, M1)
 
@@ -86,3 +87,4 @@ fun" : on rapporte les mesures.
 | Version | Date | Changement |
 |---|---|---|
 | 1.0 | 2026-10-02 | Index vivant, decisions D-01 a D-09, hypotheses H-01 a H-10 (T-0009) |
+| 1.1 | 2026-10-02 | D-04, D-05, D-07 fermees ; D-10 (R-M1-52 et seuils de Garde, mesure R-M1-54 avant / apres) (T-0024) |

@@ -3,7 +3,7 @@ id: T-0013
 title: Arene greybox Spiaggia Tralala en Parts (script de construction)
 role: 08-level-designer
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: feature
 priority: P1
 depends_on: [T-0009]

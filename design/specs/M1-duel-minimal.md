@@ -114,6 +114,53 @@ Slugs de `Config.Roster` (lot L0). Aucun Champion, aucune Epique : M1 teste la b
 | `glorbo-fruttodrillo` | Rare (2) | Colosse | Mare, Frutta | Machoire juteuse : Provocation 1 tour + 30 % de vol de vie |
 | `boneca-ambalabu` | Rare (2) | Colosse | Mare, Macchina | Rebond de pneu : 3 ennemis + Provocation 1 tour |
 
+Valeurs des competences (`Config.Skills`, relues par T-0023). Regle de puissance : 100 energie = 4 Attaques
+d'accumulation (R-M1-15, R-M1-16), donc une competence a `cost` 100 vaut 2 a 3 Attaques de base (`power` cumule 2,0 a
+3,0), `cost` 90 : 1,8 a 2,7, `cost` 80 : 1,6 a 2,4, `cost` 70 : 1,4 a 2,1. Un soin compte `power` x MAG en PV
+(R-M1-11), une Attaque magique de base vaut 0,8 (R-M1-12). Statuts poses : Endormi, Etourdi, Provocation, Bouclier
+(4 des 13 statuts de R-M1-35 a R-M1-47).
+
+| Slug | `cost` | `effectId` | `power` et `params` retenus (T-0010 => T-0023) | Justification |
+|---|---|---|---|---|
+| `tim-cheese` | 80 | `MultiHit` | 2 x 0,75 (inchange) | 1,5 sous le plancher 1,6, mais VIT 140 => 1,9 lancers par combat, le plus haut des 10 |
+| `trippi-troppi` | 80 | `StrikeBackline` | 1,60 (inchange) | ATQ 140 contre DEF arriere 20 a 30 : vaut 2 Attaques sur la ligne avant |
+| `ta-ta-ta-ta-sahur` | 100 | `WakeAlliesSleepEnemy` | 1,00 => 1,60 (MAG), Endormi 50 % 1 tour | 1,0 valait 1,25 Attaque magique ; Endormi tombe au premier degat (R-M1-36) |
+| `banano` | 100 | `TauntShield` | Bouclier 0,20 => 0,25 x HPmax, Provocation 1 tour | 0,20 : 45 % de victoires contre 55 % pour les 2 autres Colosses ; reste sous le Bouclier de C05 (0,30) |
+| `bananella` | 100 | `DamageStunChance` | 1,50 => 1,80, Etourdi 25 % 1 tour | 1,5 + 0,25 action ennemie = 1,75 ; 1,8 + 0,25 = 2,05 |
+| `pomito` | 90 | `PowerStrike` | 1,80 => 1,50 + `lifestealPct` 0,50 | fiche L0 "se soigne de 50 % des degats", absent de T-0010 ; 1,5 + soin 0,75 = 2,25 |
+| `pomita` | 70 | `Heal` | 2,50 (inchange) | 2,5 x MAG 110 = 275 PV = 25 % des PV d'un Guerrier (fiche "soin de 25 %") |
+| `myrtila` | 70 | `HealEnergy` | 1,20 => 1,60 (MAG) + 20 energie | 132 PV donnaient 41 % de victoires ; 176 PV reste un "petit soin" sous Compote |
+| `glorbo-fruttodrillo` | 100 | `DamageTauntLifesteal` | 1,30 + vol de vie 0,30, Provocation 1 tour (inchange) | 1,3 + 0,39 + Provocation ; 55 % de victoires avec les stats Colosse |
+| `boneca-ambalabu` | 100 | `MultiTargetTaunt` | 3 x 0,80, Provocation 1 tour (inchange) | 2,4 Attaques, dans la fourchette |
+| 32 autres unites L0 | classe | `PowerStrike` | 1,50 => 2,00 | plancher du cout 100 ; hors M1 |
+
+Mesure (`COMBAT_SIM_M1=2000 lune run tests/run.luau sim/UnitWinRates`, 2 000 combats, equipes de 3 a 5 unites M1
+distinctes de meme taille, Equilibre, 1 etoile, seed 20261002 ; taux = combats gagnes par l'equipe de l'unite) :
+
+| Slug | Avant T-0023 | Apres T-0023 | Lancers de competence par combat |
+|---|---|---|---|
+| `tim-cheese` | 51,2 % | 50,9 % | 1,91 |
+| `trippi-troppi` | 53,1 % | 52,4 % | 1,67 |
+| `ta-ta-ta-ta-sahur` | 41,8 % | 42,3 % | 1,03 |
+| `banano` | 45,1 % | 44,8 % | 1,04 |
+| `bananella` | 44,5 % | 44,0 % | 0,70 |
+| `pomito` | 54,2 % | 54,4 % | 1,11 |
+| `pomita` | 51,8 % | 51,8 % | 1,32 |
+| `myrtila` | 41,2 % | 44,3 % | 1,88 |
+| `glorbo-fruttodrillo` | 54,7 % | 53,5 % | 1,23 |
+| `boneca-ambalabu` | 54,6 % | 54,9 % | 1,23 |
+
+Harnais QA T-0015 (`lune run tests/sim/run_duels.luau 2000 20261002 --m1`, equipes de 2 a 8 unites de meme taille,
+doublons et tactiques melangees, chaque paire jouee dans les 2 sens), % hors nuls avant / apres T-0023 :
+trippi-troppi 57,1 / 57,6 ; boneca-ambalabu 54,5 / 53,6 ; pomita 50,8 / 50,9 ; glorbo-fruttodrillo 50,7 / 50,1 ;
+pomito 49,9 / 49,7 ; bananella 48,9 / 49,2 ; myrtila 48,4 / 48,8 ; ta-ta-ta-ta-sahur 48,0 / 48,8 ; banano 45,8 /
+45,9 ; tim-cheese 45,7 / 45,3. Les 10 unites restent dans la fenetre 40 a 60 % avant et apres ; nuls 4,1 %.
+
+Lecture : les competences pesent peu sur le taux de victoire (1 lancer par combat en moyenne) ; un essai a `power`
+2,4 pour `ta-ta-ta-ta-sahur` et `bananella` ne les monte qu'a 44,3 % et 45,2 %. L'ecart de 10 points entre les
+Colosses (HP 1 400) et les unites a 750 PV (Mage, Artilleur) vient des stats de classe `Combat.classes`, hors
+perimetre de T-0023 (decision D-11, T-0015).
+
 Synergies activables au palier 1 (D-M1-22, test Lune : compter les membres de `Synergies[nom].members` presents) :
 
 | Synergie | Palier 1 | Membres M1 | Effet (`effectId`, params) | Obligatoire M1 |

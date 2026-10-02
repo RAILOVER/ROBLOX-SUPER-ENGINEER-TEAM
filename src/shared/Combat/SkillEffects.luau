@@ -54,8 +54,9 @@ end
 
 local HANDLERS: { [string]: Handler } = {}
 
+-- `params.lifestealPct` optionnel (Croque-pomme : soin du lanceur floor(pct x degats)).
 HANDLERS.PowerStrike = function(state, unit, skill)
-	return strike(state, unit, skill, Targeting.single(state, unit))
+	return strike(state, unit, skill, Targeting.single(state, unit), skill.params.lifestealPct)
 end
 
 -- R-M1-23 : `hits` Attaques sur la meme cible, 1 seul gain energyPerHitTaken (state.hitThisAction).

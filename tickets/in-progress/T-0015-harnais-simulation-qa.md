@@ -3,7 +3,7 @@ id: T-0015
 title: Harnais de simulation QA (10 000 duels) et revue de CombatSim
 role: 09-qa-reviewer
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: audit
 priority: P0
 depends_on: [T-0010]

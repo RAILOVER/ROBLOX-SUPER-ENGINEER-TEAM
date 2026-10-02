@@ -72,8 +72,19 @@ local function loadModule(node: Node): any
 end
 
 -- Arbre Rojo minimal : ReplicatedStorage.Shared -> src/shared, ServerScriptService.Server -> src/server
+-- La chaine de parents est construite pour que `script.Parent.Parent` fonctionne depuis un sous-dossier.
 local function pathRoot(path: string): Node
-	return makeNode(path, nil)
+	local parent = string.match(path, "^(.*)/[^/]+$")
+	return makeNode(path, if parent then pathRoot(parent) else nil)
+end
+
+-- `name` accepte un chemin "Dossier/Module" pour charger un module d'un sous-dossier avec ses parents.
+local function walk(root: Node, name: string): Node
+	local node = root
+	for part in string.gmatch(name, "[^/]+") do
+		node = node[part]
+	end
+	return node
 end
 
 local passed, failed = 0, 0
@@ -171,16 +182,18 @@ end
 collect("tests")
 table.sort(specs)
 
+local startedAt = os.clock()
 for _, spec in specs do
+	local specStart = os.clock()
 	local env = setmetatable({
 		describe = describe,
 		it = it,
 		expect = expect,
 		loadShared = function(name: string): any
-			return loadModule(pathRoot("src/shared")[name])
+			return loadModule(walk(pathRoot("src/shared"), name))
 		end,
 		loadServer = function(name: string): any
-			return loadModule(pathRoot("src/server")[name])
+			return loadModule(walk(pathRoot("src/server"), name))
 		end,
 	}, { __index = getfenv(0) :: any })
 	local chunk = luau.load(fs.readFile(spec), { debugName = spec, environment = env :: any })
@@ -189,9 +202,17 @@ for _, spec in specs do
 		failed += 1
 		table.insert(failures, `{spec} : {err}`)
 	end
+	if process.env.LUNE_TEST_TIMER ~= nil then
+		print(`  {spec} : {string.format("%.2f", os.clock() - specStart)} s`)
+	end
 end
 
-print(`{#specs} spec(s), {passed} test(s) OK, {failed} echec(s)`)
+print(
+	`{#specs} spec(s), {passed} test(s) OK, {failed} echec(s), {string.format(
+		"%.2f",
+		os.clock() - startedAt
+	)} s`
+)
 for _, failure in failures do
 	print(`  ECHEC {failure}`)
 end

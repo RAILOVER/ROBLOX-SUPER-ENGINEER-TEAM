@@ -10,6 +10,7 @@ return table.freeze({
 	Roster = require(script.Roster),
 	Synergies = require(script.Synergies),
 	Combos = require(script.Combos),
+	Skills = require(script.Skills),
 	Duel = require(script.Duel),
 	Eggs = require(script.Eggs),
 	Limits = require(script.Limits),

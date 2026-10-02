@@ -1,0 +1,13 @@
+[package]
+name = "railover/roblox-studio-team"
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+[dependencies]
+# Ajouter ici apres decision d'architecture (ticket Producteur). Exemples:
+# ProfileStore = "loleris/profilestore@1"
+# Promise = "evaera/promise@4"
+
+[dev-dependencies]
+# Jest = "jsdotlua/jest@3"

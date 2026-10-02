@@ -1,0 +1,38 @@
+name: gates
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  repo-and-luau:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: check_repo
+        run: python3 tools/check_repo.py
+      - name: check_textures
+        run: python3 tools/check_textures.py
+      - uses: CompeyDev/setup-rokit@v0.1.2
+      - name: lint luau
+        run: tools/lint.sh
+  blender-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: install blender
+        run: |
+          sudo snap install blender --classic
+      - name: validate meshes
+        run: |
+          set -e
+          shopt -s nullglob
+          status=0
+          for f in assets/meshes/source/*.blend; do
+            name=$(basename "$f" .blend)
+            blender -b "$f" --python tools/blender/validate_mesh.py -- --budgets art/budgets/budgets.yaml --report "assets/meshes/reports/$name.json" || status=1
+          done
+          # La fixture contient volontairement 3 meshes fautifs: elle doit echouer.
+          if [ "$status" = "0" ]; then echo "fixture_kit devait etre rejetee"; exit 1; fi

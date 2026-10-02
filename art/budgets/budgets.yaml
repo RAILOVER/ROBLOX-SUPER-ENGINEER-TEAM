@@ -1,0 +1,68 @@
+# Source de verite des contraintes techniques. Lue par tools/blender/validate_mesh.py,
+# tools/check_textures.py et tools/check_repo.py. Les LLM jugent le style, ce fichier juge les contraintes.
+# Toute modification = ticket valide par le Producteur + le Tech artist 3D.
+
+version: 1
+
+naming:
+  # Nom d'objet Blender et de fichier FBX: <Categorie>_<Nom>_<Variante>_LODn (LOD optionnel)
+  # Exemples valides: PROP_Barrel_A_LOD0, KIT_WallStraight_2m, ENV_RockLarge_B_LOD1
+  mesh_regex: '^(PROP|KIT|ENV|CHAR|VFX|UI)_[A-Z][A-Za-z0-9]*(_[A-Z0-9][A-Za-z0-9]*)*(_LOD[0-3])?$'
+  collision_suffix: '_COL'          # mesh de collision: <Nom>_COL (convex, pas de UV requis)
+  texture_regex: '^T_[A-Z][A-Za-z0-9]*(_[A-Z0-9][A-Za-z0-9]*)*_(Color|Normal|Roughness|Metalness)\.png$'
+
+units:
+  scene_unit_scale: 1.0             # 1 unite Blender = 1 metre; conversion Roblox: 1 m = 3.571 studs (hauteur avatar R15 standard)
+  max_dimension_m: 64.0             # au-dela, decouper en modules
+  origin_tolerance_m: 0.01          # origine au sol (min Z = 0) ou au centre, voir categorie
+  apply_transforms: true            # location/rotation/scale appliquees avant export
+
+triangles:
+  # Budget max de triangles par LOD0 selon la categorie
+  PROP: 1500
+  KIT: 800
+  ENV: 3000
+  CHAR: 8000                        # rarement utilise: on s'appuie sur les avatars joueurs
+  VFX: 300
+  UI: 200
+  lod_ratio: [1.0, 0.5, 0.25, 0.1]  # LOD1 <= 50 % de LOD0, LOD2 <= 25 %, LOD3 <= 10 %
+  roblox_hard_limit: 10000          # limite moteur par MeshPart a l'import, ne jamais approcher
+  max_ngons: 0                      # 0 ngon tolere (quads et tris uniquement)
+
+uv:
+  required: true
+  max_overlap_ratio: 0.02           # 2 % de faces UV superposees tolerees (hors symetrie declaree)
+  bounds: [0.0, 1.0]                # UV dans l'espace 0-1 sauf tilables declares _TILE
+
+materials:
+  max_per_mesh: 1                   # 1 materiau par mesh, atlas obligatoire sinon
+  surface_appearance_maps: [Color, Normal, Roughness, Metalness]
+
+textures:
+  power_of_two: true
+  max_size_px: 1024                 # Roblox reechantillonne au-dela de 1024
+  ui_max_size_px: 1024
+  icon_sizes_px: [512]
+  thumbnail_size_px: [1920, 1080]
+  game_icon_size_px: [512, 512]
+  formats: [png]
+
+collision:
+  required_for: [PROP, KIT, ENV]
+  max_triangles: 200                # mesh _COL
+  must_be_convex: true
+
+performance:
+  # Cibles mesurees par le QA sur appareil bas de gamme (voir agents/09-qa-reviewer)
+  client_fps_mobile_min: 45
+  client_fps_desktop_min: 60
+  server_heartbeat_ms_max: 16
+  memory_client_mb_max: 900         # cible telephone 3 Go RAM
+  max_parts_visible: 15000
+  max_shadow_lights_visible: 6
+  max_draw_calls_per_frame: 2500
+
+luau:
+  strict_mode_required: true        # --!strict en tete de chaque module
+  max_file_lines: 400
+  forbidden_globals: [wait, spawn, delay, _G, shared]

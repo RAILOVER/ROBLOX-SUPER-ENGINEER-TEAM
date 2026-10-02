@@ -1,0 +1,27 @@
+{
+  "name": "roblox-studio-team",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedFirst": {
+      "$path": "src/ReplicatedFirst"
+    },
+    "ReplicatedStorage": {
+      "Shared": { "$path": "src/shared" },
+      "Packages": { "$path": { "optional": "Packages" } }
+    },
+    "ServerScriptService": {
+      "Server": { "$path": "src/server" }
+    },
+    "ServerStorage": {
+      "ServerPackages": { "$path": { "optional": "ServerPackages" } }
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": {
+        "Client": { "$path": "src/client" }
+      }
+    },
+    "Workspace": {
+      "$properties": { "StreamingEnabled": true }
+    }
+  }
+}

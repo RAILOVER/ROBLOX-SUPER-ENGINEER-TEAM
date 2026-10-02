@@ -3,7 +3,7 @@ id: T-0018
 title: Gabarits de prompts 2D (cartes, oeufs, icones) et grille de lisibilite 64 px
 role: 07-artiste-2d
 phase: P1-greybox
-status: backlog
+status: in-progress
 type: spec
 priority: P2
 depends_on: [T-0014]
